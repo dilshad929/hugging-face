@@ -1,10 +1,15 @@
 from flask import Flask, request, jsonify
 import requests
+import os
 
 app = Flask(__name__)
 
 API_URL = "https://api-inference.huggingface.co/models/facebook/bart-large-cnn"
-HEADERS = {"Authorization": "Bearer YOUR_HF_TOKEN"}  # replace with your HF token
+HEADERS = {"Authorization": f"Bearer {os.getenv('HF_TOKEN')}"}
+
+@app.route("/")
+def home():
+    return "✅ Hugging Face API is running! Use POST /summarize with JSON {\"text\": \"your text here\"}"
 
 @app.route("/summarize", methods=["POST"])
 def summarize():
